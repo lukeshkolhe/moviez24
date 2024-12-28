@@ -1,5 +1,4 @@
 class Movie {
-
   final String backdropPath;
   final int id;
   final String title;
@@ -15,6 +14,7 @@ class Movie {
   final bool video;
   final double voteAverage;
   final int voteCount;
+  bool isFavorite = false;
 
   Movie({
     required this.backdropPath,
@@ -57,5 +57,4 @@ class Movie {
 
   static List<Movie> fromJsonList(List list) =>
       list.map((e) => Movie.fromJson(e)).toList();
-
 }

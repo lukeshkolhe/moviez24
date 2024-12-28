@@ -8,4 +8,8 @@ abstract class MoviesRepository {
   static MoviesRepository get instance => MoviesRepositoryImpl();
 
   Future<Result<List<Movie>, PaginationDetails>> getMovies(GetMoviesRequest request);
+
+  Future<Result<bool, void>> saveFavoriteMovie(Movie movie);
+
+  Future<Result<bool, void>> removeFavoriteMovie(Movie movie);
 }

@@ -6,11 +6,11 @@ import 'package:moviez24/app/shared_widgets/pagination/paginated_list_controller
 
 class PaginatedList<T> extends BaseView<PaginatedListController<T>> {
   const PaginatedList({
-    Key? key,
+    super.key,
     required this.builder,
     required this.emptyViewBuilder,
     required this.controller,
-  }) : super(key: key);
+  });
 
   @override
   final PaginatedListController<T> controller;

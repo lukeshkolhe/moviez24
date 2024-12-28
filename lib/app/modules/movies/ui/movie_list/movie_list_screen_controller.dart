@@ -11,4 +11,22 @@ class MovieListScreenController extends BaseController {
     onDataRequested: (pagination) =>
         repository.getMovies(GetMoviesRequest(paginationDetails: pagination)),
   );
+
+  toggleFavMovie(Movie movie) {
+    if (movie.isFavorite) {
+      _removeFromFav(movie);
+    } else {
+      _addToFav(movie);
+    }
+    movie.isFavorite = !movie.isFavorite;
+    update();
+  }
+
+  _addToFav(Movie movie) {
+    repository.saveFavoriteMovie(movie);
+  }
+
+  _removeFromFav(Movie movie) {
+    repository.removeFavoriteMovie(movie);
+  }
 }
