@@ -1,3 +1,3 @@
 class StorageConsts {
-  static const String FavoriteMovieIDs = 'favorite_movie_ids';
+  static const String FavoriteMovie = 'favorite_movie';
 }

@@ -13,27 +13,29 @@ class MoviesRepositoryImpl extends MoviesRepository {
   @override
   Future<Result<List<Movie>, PaginationDetails>> getMovies(
       GetMoviesRequest request) async {
+    final favoriteMovies = await localService.getFavoriteMovies();
     final result = await remoteService.getMovies(request);
     if (result.isSuccess) {
-      final favoriteIds = await localService.getFavoriteMovieIDs();
       for (final movie in result.data) {
-        if (favoriteIds.contains(movie.id)) {
+        if (favoriteMovies.any((m) => m.id == movie.id)) {
           movie.isFavorite = true;
         }
       }
+    } else if(favoriteMovies.isNotEmpty){
+      return Result.fromData(favoriteMovies);
     }
     return result;
   }
 
   @override
   Future<Result<bool, void>> removeFavoriteMovie(Movie movie) async {
-    await localService.removeFavoriteMovie(movie.id);
+    await localService.removeFavoriteMovie(movie);
     return Result<bool, void>.fromData(true);
   }
 
   @override
   Future<Result<bool, void>> saveFavoriteMovie(Movie movie) async {
-    await localService.saveFavoriteMovie(movie.id);
+    await localService.saveFavoriteMovie(movie);
     return Result<bool, void>.fromData(true);
   }
 }
