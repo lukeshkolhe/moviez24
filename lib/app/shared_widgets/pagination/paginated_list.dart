@@ -23,7 +23,7 @@ class PaginatedList<T> extends BaseView<PaginatedListController<T>> {
 
   @override
   Widget build(BuildContext context) => Obx(() {
-        final List<T> list = controller.list.value;
+        final List<T> list = controller.filteredList;
 
         if (controller.isLoading.value) {
           return Container();
@@ -61,7 +61,7 @@ class PaginatedGrid<T> extends PaginatedList<T> {
   @override
   Widget build(BuildContext context) => Obx(
         () {
-          final List<T> list = controller.list.value;
+          final List<T> list = controller.filteredList;
 
           if (controller.isLoading.value) {
             return Container();

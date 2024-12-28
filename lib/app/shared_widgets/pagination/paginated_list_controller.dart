@@ -10,6 +10,8 @@ typedef DataRequester<T> = Future<Result<List<T>, PaginationDetails>> Function(
 
 class PaginatedListController<T> extends BaseController {
   final Rx<List<T>> list = Rx([]);
+  bool Function(T)? filter;
+  List<T> get filteredList => list.value.where(filter ?? (t) => true).toList();
   RxBool isLoadingMore = false.obs;
   final int perPage;
 
@@ -31,6 +33,11 @@ class PaginatedListController<T> extends BaseController {
   PaginatedListController({required this.onDataRequested, this.perPage = 20}) {
     scrollController.addListener(_checkIfLoadMoreNeeded);
     requestData();
+  }
+
+  applyFilter(bool Function(T) filter) {
+    this.filter = filter;
+    list.update((l) {});
   }
 
   reload() {

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:moviez24/app/base/base_controller.dart';
 import 'package:moviez24/app/modules/movies/domain/models/reponse/movie.dart';
 import 'package:moviez24/app/modules/movies/domain/models/request/get_movie_request.dart';
@@ -7,10 +8,17 @@ import 'package:moviez24/app/shared_widgets/pagination/paginated_list_controller
 class MovieListScreenController extends BaseController {
   final repository = MoviesRepository.instance;
 
+  final searchInputController = TextEditingController();
+
   late final paginationController = PaginatedListController<Movie>(
     onDataRequested: (pagination) =>
         repository.getMovies(GetMoviesRequest(paginationDetails: pagination)),
   );
+
+  onSearchInputChanged(String query) {
+    paginationController.applyFilter(
+        (Movie m) => m.title.toLowerCase().contains(query.toLowerCase()));
+  }
 
   toggleFavMovie(Movie movie) {
     if (movie.isFavorite) {
