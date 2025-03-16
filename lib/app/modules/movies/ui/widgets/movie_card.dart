@@ -19,9 +19,13 @@ class MovieCard extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: movie.posterPath,
                 placeholder: (c, s) => const CustomLoadingIndicator(),
-                errorWidget: (c, s, e) => const Center(
+                errorWidget: (c, s, e) {
+                  print(e);
+                  print(s);
+                  return const Center(
                   child: Text('Image unable to load'),
-                ),
+                );
+                },
               ),
             ),
           ),
