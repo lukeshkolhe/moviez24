@@ -40,7 +40,7 @@ class PaginatedListController<T> extends BaseController {
     list.update((l) {});
   }
 
-  reload() {
+  reload() async {
     _clearData();
     requestData();
   }
@@ -66,7 +66,9 @@ class PaginatedListController<T> extends BaseController {
         List<T> generatedList = List.from(list.value);
         generatedList.addAll(data);
         list.value = generatedList;
-        paginationDetails = result.metaData!;
+        if(result.metaData != null) {
+          paginationDetails = result.metaData!;
+        }
       },
       onFailure: (err) {
         ErrorMessage(message: err.errorMsg).show();

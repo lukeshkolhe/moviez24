@@ -37,17 +37,22 @@ class PaginatedList<T> extends BaseView<PaginatedListController<T>> {
         bool isLoadingMore = controller.isLoadingMore.value;
 
         /// List View
-        return ListView.builder(
-          padding: const EdgeInsets.only(bottom: 24),
-          physics: const BouncingScrollPhysics(),
-          controller: controller.scrollController,
-          itemCount: list.length + (isLoadingMore ? 1 : 0),
-          itemBuilder: (ctx, index) => isLoadingMore && index == list.length
-              ? const Padding(
-                  padding: EdgeInsets.only(top: 16.0),
-                  child: CustomLoadingIndicator(),
-                )
-              : builder(list[index], index),
+        return RefreshIndicator(
+          onRefresh: () async {
+            controller.reload();
+          },
+          child: ListView.builder(
+            padding: const EdgeInsets.only(bottom: 24),
+            physics: const BouncingScrollPhysics(),
+            controller: controller.scrollController,
+            itemCount: list.length + (isLoadingMore ? 1 : 0),
+            itemBuilder: (ctx, index) => isLoadingMore && index == list.length
+                ? const Padding(
+                    padding: EdgeInsets.only(top: 16.0),
+                    child: CustomLoadingIndicator(),
+                  )
+                : builder(list[index], index),
+          ),
         );
       });
 }
@@ -75,27 +80,32 @@ class PaginatedGrid<T> extends PaginatedList<T> {
           bool isLoadingMore = controller.isLoadingMore.value;
 
           /// List View
-          return GridView.builder(
-            padding: const EdgeInsets.only(bottom: 24),
-            physics: const BouncingScrollPhysics(),
-            controller: controller.scrollController,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 0.5,
-            ),
-            itemCount: list.length + (isLoadingMore ? 1 : 0),
-            itemBuilder: (ctx, index) {
-              if (isLoadingMore && index == list.length) {
-                return const Padding(
-                  padding: EdgeInsets.only(top: 16.0),
-                  child: CustomLoadingIndicator(),
-                );
-              } else {
-                return builder(list[index], index);
-              }
+          return RefreshIndicator(
+            onRefresh: () async {
+              controller.reload();
             },
+            child: GridView.builder(
+              padding: const EdgeInsets.only(bottom: 24),
+              physics: const BouncingScrollPhysics(),
+              controller: controller.scrollController,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.5,
+              ),
+              itemCount: list.length + (isLoadingMore ? 1 : 0),
+              itemBuilder: (ctx, index) {
+                if (isLoadingMore && index == list.length) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 16.0),
+                    child: CustomLoadingIndicator(),
+                  );
+                } else {
+                  return builder(list[index], index);
+                }
+              },
+            ),
           );
         },
       );

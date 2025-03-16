@@ -22,7 +22,7 @@ class MoviesRepositoryImpl extends MoviesRepository {
         }
       }
     } else if(favoriteMovies.isNotEmpty){
-      return Result.fromData(favoriteMovies);
+      return Result.fromData(favoriteMovies)..metaData = null;
     }
     return result;
   }
